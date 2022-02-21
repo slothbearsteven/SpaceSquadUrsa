@@ -5,19 +5,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-    public Transform targetPlayer;
+    public GameObject targetPlayer;
     public GameObject projectilePrefab;
     private float speed = 5f;
     // Start is called before the first frame update
     void Start()
     {
+        targetPlayer = GameObject.Find("Player");
+
         StartCoroutine(EnemyAttackRoutine());
     }
 
     // Update is called once per frame
     void Update()
     {//rotates the enemy towards the player
-        Vector3 direction = targetPlayer.position - transform.position;
+        Vector3 direction = targetPlayer.transform.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
 
