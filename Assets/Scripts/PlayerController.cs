@@ -45,5 +45,22 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Player Energy Down");
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy Projectile"))
+        {
+            Debug.Log("Player Energy Down");
+            Destroy(other.gameObject);
+        }
+    }
 }
 

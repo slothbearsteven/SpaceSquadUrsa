@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     public float speed = 20.0f;
-    private float bounds = -15.0f;
+    private float bounds = 22.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,7 @@ public class EnemyProjectile : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
-        if (transform.position.z <= bounds)
+        if (transform.position.z <= -bounds - 10 || transform.position.z >= bounds - 10 || transform.position.x <= -bounds || transform.position.x >= bounds)
         {
             Destroy(gameObject);
         }
