@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float verticalInput;
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
+    public GameObject projectilePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +38,10 @@ public class PlayerController : MonoBehaviour
         if (transform.position.z >= zbounds)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, zbounds);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         }
 
     }
