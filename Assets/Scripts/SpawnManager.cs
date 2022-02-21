@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private float zPawnMin = 5.0f;
     private float xSpawnRange = 20.0f;
     public int enemyCount;
-    private int wave = 1;
+    public static int wave = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,5 +35,10 @@ public class SpawnManager : MonoBehaviour
         }
 
 
+    }
+
+    public int waveCount()
+    {
+        return wave;
     }
 }

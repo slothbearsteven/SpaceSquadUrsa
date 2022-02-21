@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject targetPlayer;
     public GameObject projectilePrefab;
+    public int waveNumber;
     private float speed = 5f;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {//rotates the enemy towards the player
+
         Vector3 direction = targetPlayer.transform.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);

@@ -566,3 +566,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ab1710676a3b274b9441eb6dd937dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy: {fileID: 6775552753592588875, guid: 422c585dd40db8d45ac0df1df1d64928, type: 3}
+  enemyCount: 0
