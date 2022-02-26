@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
     public GameObject projectilePrefab;
+
+    private Vector3 offset = new Vector3(0, 0, 0.15f);
     // Start is called before the first frame update
     void Start()
     {
@@ -41,18 +43,14 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+            Instantiate(projectilePrefab, transform.position + offset, projectilePrefab.transform.rotation);
         }
 
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Player Energy Down");
-        }
-    }
+
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -60,6 +58,10 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Player Energy Down");
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Player Energy Down");
         }
     }
 }
