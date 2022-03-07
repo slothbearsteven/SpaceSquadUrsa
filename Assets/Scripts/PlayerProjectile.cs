@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerProjectile : Projectile
 {
-    float speed = 40.0f;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+        speed = 40.0f;
 
     }
 

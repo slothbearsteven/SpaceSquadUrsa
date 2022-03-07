@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject targetPlayer;
     public GameObject projectilePrefab;
-    public int waveNumber;
+
     private float speed = 5f;
     // Start is called before the first frame update
     void Start()

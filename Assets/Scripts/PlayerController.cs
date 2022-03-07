@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private float speed = 10;
-    public float horizontalInput;
-    public float verticalInput;
+    public float horizontalInput { get; set; }
+    public float verticalInput { get; set; }
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
+
+    public static int energy { get; set; }
     public GameObject projectilePrefab;
 
     private Vector3 offset = new Vector3(0, 0, 0.15f);
@@ -20,6 +22,29 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        PlayerMovement();
+        PlayerShoot();
+
+    }
+
+
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy Projectile"))
+        {
+            PlayerEnergyDecrease();
+            Destroy(other.gameObject);
+        }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            PlayerEnergyDecrease();
+        }
+    }
+    private void PlayerMovement()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
@@ -41,28 +66,24 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, zbounds);
         }
+    }
+
+    void PlayerShoot()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(projectilePrefab, transform.position + offset, projectilePrefab.transform.rotation);
         }
-
     }
 
-
-
-
-
-    private void OnTriggerEnter(Collider other)
+    void PlayerEnergyDecrease()
     {
-        if (other.gameObject.CompareTag("Enemy Projectile"))
+        energy -= 1;
+        if (energy <= 0)
         {
-            Debug.Log("Player Energy Down");
-            Destroy(other.gameObject);
-        }
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Player Energy Down");
+            Destroy(gameObject);
         }
     }
+
 }
 
