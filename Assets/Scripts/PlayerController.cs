@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,7 +12,8 @@ public class PlayerController : MonoBehaviour
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
 
-    public static int energy { get; set; }
+    public static int energy { get; set; } = 5;
+    public Text energyText;
     public GameObject projectilePrefab;
 
     private Vector3 offset = new Vector3(0, 0, 0.15f);
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerMovement();
         PlayerShoot();
+        energyText.text = $"Energy: {energy}";
 
     }
 
@@ -81,8 +85,8 @@ public class PlayerController : MonoBehaviour
         energy -= 1;
         if (energy <= 0)
         {
+            energyText.text = $"Energy: Critical Failure";
             Destroy(gameObject);
-            SpawnManager.GameOver();
         }
     }
 

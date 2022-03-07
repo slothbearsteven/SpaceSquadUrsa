@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.IO;
+
 
 public class SpawnManager : MonoBehaviour
 {
 
     public GameObject enemy;
     public static bool gameActive;
+    public GameObject GameOverText;
     private float zSpawnMax = 9.0f;
     private float zPawnMin = 5.0f;
     private float xSpawnRange = 20.0f;
@@ -23,6 +28,7 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         WaveSet();
+        GameOver();
     }
 
     void SpawnEnemy(int enemiesToSpawn)
@@ -49,8 +55,15 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public static void GameOver()
+    public void GameOver()
     {
-        gameActive = false;
+        if (PlayerController.energy <= 0)
+        {
+            gameActive = false;
+            GameOverText.SetActive(true);
+        }
+
+
+
     }
 }
