@@ -6,6 +6,7 @@ public class SpawnManager : MonoBehaviour
 {
 
     public GameObject enemy;
+    public static bool gameActive;
     private float zSpawnMax = 9.0f;
     private float zPawnMin = 5.0f;
     private float xSpawnRange = 20.0f;
@@ -14,6 +15,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameActive = true;
         SpawnEnemy(wave);
     }
 
@@ -39,6 +41,16 @@ public class SpawnManager : MonoBehaviour
     public void WaveSet()
     {
         enemyCount = FindObjectsOfType<Enemy>().Length;
-        if (enemyCount == 0) { wave++; SpawnEnemy(wave); PlayerController.energy++; }
+        if (enemyCount == 0)
+        {
+            wave++; SpawnEnemy(wave);
+            if (PlayerController.energy < 5) { PlayerController.energy++; }
+            else if (PlayerController.energy >= 5) { PlayerController.energy = 5; }
+        }
+    }
+
+    public static void GameOver()
+    {
+        gameActive = false;
     }
 }

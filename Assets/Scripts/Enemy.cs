@@ -21,14 +21,21 @@ public class Enemy : MonoBehaviour
     void Update()
     {//rotates the enemy towards the player
 
-        Vector3 direction = targetPlayer.transform.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
 
+        EnemyTargeting();
 
 
     }
 
+    void EnemyTargeting()
+    {
+        if (SpawnManager.gameActive)
+        {
+            Vector3 direction = targetPlayer.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
+        }
+    }
 
     IEnumerator EnemyAttackRoutine()
     {

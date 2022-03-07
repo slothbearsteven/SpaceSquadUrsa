@@ -82,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (energy <= 0)
         {
             Destroy(gameObject);
+            SpawnManager.GameOver();
         }
     }
 
