@@ -5,15 +5,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
+    public AudioClip shootingSound;
+    public AudioClip deathSound;
     public GameObject targetPlayer;
     public GameObject projectilePrefab;
+    public GameObject enemySprite;
+    public ParticleSystem explosionParticle;
+    private AudioSource enemyAudio;
 
+    private bool isAlive = true;
     private float speed = 5f;
     // Start is called before the first frame update
     void Start()
     {
         targetPlayer = GameObject.Find("Player");
-
+        enemyAudio = GetComponent<AudioSource>();
         StartCoroutine(EnemyAttackRoutine());
     }
 
@@ -29,7 +35,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyTargeting()
     {
-        if (SpawnManager.gameActive)
+        if (MainManager.gameActive)
         {
             Vector3 direction = targetPlayer.transform.position - transform.position;
             Quaternion rotation = Quaternion.LookRotation(direction);
@@ -39,9 +45,10 @@ public class Enemy : MonoBehaviour
 
     IEnumerator EnemyAttackRoutine()
     {
-        while (targetPlayer)
+        while (MainManager.gameActive && isAlive)
         {
             yield return new WaitForSeconds(1);
+            enemyAudio.PlayOneShot(shootingSound, 0.5f);
             Instantiate(projectilePrefab, transform.position, transform.rotation);
         }
     }
@@ -51,13 +58,24 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player Projectile"))
         {
-            Destroy(gameObject);
+            isAlive = false;
             Destroy(other.gameObject);
+            StartCoroutine(DestructionCoroutine());
         }
         if (other.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            isAlive = false;
+            StartCoroutine(DestructionCoroutine());
         }
+    }
+
+    IEnumerator DestructionCoroutine()
+    {
+        explosionParticle.Play();
+        enemyAudio.PlayOneShot(deathSound, 1.0f);
+        enemySprite.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 
 

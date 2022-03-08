@@ -9,6 +9,12 @@ public class PlayerController : MonoBehaviour
     private float speed = 10;
     public float horizontalInput { get; set; }
     public float verticalInput { get; set; }
+
+    public ParticleSystem explosionParticle;
+    public AudioClip shootingSound;
+    public AudioClip deathSound;
+    public GameObject playerSprite;
+    private AudioSource playerAudio;
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
 
@@ -20,7 +26,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -50,32 +56,37 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
-        verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * verticalInput * Time.deltaTime * speed);
-        if (transform.position.x <= -xbounds)
+        if (MainManager.gameActive)
         {
-            transform.position = new Vector3(-xbounds, transform.position.y, transform.position.z);
-        }
-        if (transform.position.x >= xbounds)
-        {
-            transform.position = new Vector3(xbounds, transform.position.y, transform.position.z);
-        }
-        if (transform.position.z <= -zbounds)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, -zbounds);
-        }
-        if (transform.position.z >= zbounds)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, zbounds);
+
+            horizontalInput = Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
+            verticalInput = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.forward * verticalInput * Time.deltaTime * speed);
+            if (transform.position.x <= -xbounds)
+            {
+                transform.position = new Vector3(-xbounds, transform.position.y, transform.position.z);
+            }
+            if (transform.position.x >= xbounds)
+            {
+                transform.position = new Vector3(xbounds, transform.position.y, transform.position.z);
+            }
+            if (transform.position.z <= -zbounds)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, -zbounds);
+            }
+            if (transform.position.z >= zbounds)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y, zbounds);
+            }
         }
     }
 
     void PlayerShoot()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && MainManager.gameActive)
         {
+            playerAudio.PlayOneShot(shootingSound, 0.5f);
             Instantiate(projectilePrefab, transform.position + offset, projectilePrefab.transform.rotation);
         }
     }
@@ -85,8 +96,12 @@ public class PlayerController : MonoBehaviour
         energy -= 1;
         if (energy <= 0)
         {
+            playerAudio.PlayOneShot(deathSound, 1.0f);
+            energy = 0;
             energyText.text = $"Energy: Critical Failure";
-            Destroy(gameObject);
+            explosionParticle.Play();
+            playerSprite.SetActive(false);
+
         }
     }
 
