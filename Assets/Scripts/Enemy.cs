@@ -58,12 +58,14 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player Projectile"))
         {
+            MainManager.score += 20;
             isAlive = false;
             Destroy(other.gameObject);
             StartCoroutine(DestructionCoroutine());
         }
         if (other.gameObject.CompareTag("Player"))
         {
+            MainManager.score += 20;
             isAlive = false;
             StartCoroutine(DestructionCoroutine());
         }

@@ -11,11 +11,13 @@ public class MainManager : MonoBehaviour
     private int highScore;
     public static int score;
 
+    public Text ScoreText;
     public static bool gameActive;
     public GameObject GameOverText;
     public static MainManager Instance;
     void Start()
     {
+        score = 0;
         gameActive = true;
     }
 
@@ -23,6 +25,7 @@ public class MainManager : MonoBehaviour
     void Update()
     {
         GameOver();
+        ScoreText.text = $"Score : {score}";
     }
 
     public void GameOver()
