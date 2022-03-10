@@ -6,7 +6,7 @@ public class PlayerProjectile : Projectile
 {
 
 
-
+    //Inheritance and Polymorphism
     // Start is called before the first frame update
     void Start()
     {

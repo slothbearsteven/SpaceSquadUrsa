@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float xbounds = 22.0f;
     private float zbounds = 11.0f;
 
+    //encapsulation
     public static int energy { get; set; } = 5;
     public Text energyText;
     public GameObject projectilePrefab;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //abstraction
         PlayerMovement();
         PlayerShoot();
         energyText.text = $"Energy: {energy}";
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     private void PlayerMovement()
-    {
+    { //abstraction
         if (MainManager.gameActive)
         {
 
