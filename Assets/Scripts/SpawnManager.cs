@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        wave = 1;
         SpawnEnemy(wave);
     }
 
@@ -49,6 +49,7 @@ public class SpawnManager : MonoBehaviour
         enemyCount = FindObjectsOfType<Enemy>().Length;
         if (enemyCount == 0)
         {
+            MainManager.score += (wave * 100);
             wave++; SpawnEnemy(wave);
             if (PlayerController.energy < 5) { PlayerController.energy++; }
             else if (PlayerController.energy >= 5) { PlayerController.energy = 5; }

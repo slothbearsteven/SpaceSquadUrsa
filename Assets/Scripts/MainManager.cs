@@ -8,41 +8,39 @@ using System.IO;
 public class MainManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private int highScore;
+    public static int highScore;
     public static int score;
 
-    public Text ScoreText;
+
     public static bool gameActive;
-    public GameObject GameOverText;
-    public static MainManager Instance;
-    void Start()
-    {
-        score = 0;
-        gameActive = true;
-    }
+    public static MainManager Instance { get; private set; }
 
     // Update is called once per frame
     void Update()
     {
-        GameOver();
-        ScoreText.text = $"Score : {score}";
+        SetHighScore();
+
     }
 
-    public void GameOver()
+
+
+
+    void SetHighScore()
     {
-        if (PlayerController.energy <= 0)
+        if (score >= highScore)
         {
-            gameActive = false;
-            GameOverText.SetActive(true);
+            highScore = score;
+            SaveHighScore();
         }
     }
 
 
 
 
-
     private void Awake()
     {
+        score = 0;
+        gameActive = true;
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -50,6 +48,7 @@ public class MainManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
         LoadHighScore();
 
     }

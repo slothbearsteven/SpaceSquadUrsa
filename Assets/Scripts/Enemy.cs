@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public GameObject projectilePrefab;
     public GameObject enemySprite;
     public ParticleSystem explosionParticle;
+    private BoxCollider shipCollider;
     private AudioSource enemyAudio;
 
     private bool isAlive = true;
@@ -18,6 +19,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shipCollider = gameObject.GetComponent<BoxCollider>();
         targetPlayer = GameObject.Find("Player");
         enemyAudio = GetComponent<AudioSource>();
         StartCoroutine(EnemyAttackRoutine());
@@ -48,8 +50,11 @@ public class Enemy : MonoBehaviour
         while (MainManager.gameActive && isAlive)
         {
             yield return new WaitForSeconds(1);
-            enemyAudio.PlayOneShot(shootingSound, 0.5f);
-            Instantiate(projectilePrefab, transform.position, transform.rotation);
+            if (isAlive)
+            {
+                enemyAudio.PlayOneShot(shootingSound, 0.5f);
+                Instantiate(projectilePrefab, transform.position, transform.rotation);
+            }
         }
     }
 
@@ -58,16 +63,25 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player Projectile"))
         {
-            MainManager.score += 20;
-            isAlive = false;
-            Destroy(other.gameObject);
-            StartCoroutine(DestructionCoroutine());
+            if (isAlive)
+            {
+                MainManager.score += 20;
+                isAlive = false;
+                Destroy(other.gameObject);
+                StartCoroutine(DestructionCoroutine());
+            }
+
+
         }
         if (other.gameObject.CompareTag("Player"))
         {
-            MainManager.score += 20;
-            isAlive = false;
-            StartCoroutine(DestructionCoroutine());
+            if (isAlive)
+            {
+                MainManager.score += 20;
+                isAlive = false;
+                StartCoroutine(DestructionCoroutine());
+            }
+
         }
     }
 

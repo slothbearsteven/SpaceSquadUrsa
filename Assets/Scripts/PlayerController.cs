@@ -7,9 +7,8 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private float speed = 10;
-    public float horizontalInput { get; set; }
-    public float verticalInput { get; set; }
-
+    public float horizontalInput;
+    public float verticalInput;
     public ParticleSystem explosionParticle;
     public AudioClip shootingSound;
     public AudioClip deathSound;
@@ -26,6 +25,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        energy = 5;
         playerAudio = GetComponent<AudioSource>();
     }
 
@@ -96,13 +96,21 @@ public class PlayerController : MonoBehaviour
         energy -= 1;
         if (energy <= 0)
         {
-            playerAudio.PlayOneShot(deathSound, 1.0f);
+
             energy = 0;
-            energyText.text = $"Energy: Critical Failure";
-            explosionParticle.Play();
-            playerSprite.SetActive(false);
+            energyText.text = "Energy: Critical Failure";
+            StartCoroutine(DestructionCoroutine());
 
         }
+    }
+
+    IEnumerator DestructionCoroutine()
+    {
+        explosionParticle.Play();
+        playerAudio.PlayOneShot(deathSound, 1.0f);
+        playerSprite.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 
 }
