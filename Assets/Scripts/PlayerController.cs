@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     public GameObject playerSprite;
     private AudioSource playerAudio;
     private int shieldDuration = 5;
+    public GameObject shieldPowerup;
     private int firepowerDuration = 5;
+    private bool firepowerActive = false;
     private float xbounds = 20.0f;
     private float zbounds = 11.0f;
 
@@ -101,20 +103,39 @@ public class PlayerController : MonoBehaviour
     // shield - spend one energy to become shielded for several seconds
     IEnumerator ShieldRoutine(int duration)
     {
+        shieldPowerup.SetActive(true);
         yield return new WaitForSeconds(duration);
+        shieldPowerup.SetActive(false);
+    }
+    void ShieldUp()
+    {
+        if (Input.GetKeyDown(KeyCode.X) && energy > 1)
+            StartCoroutine(ShieldRoutine(shieldDuration));
     }
     //fire power - increases the amount of projectiles fired for a limited time for the cost of 2 energy
     IEnumerator FirepowerRoutine(int duration)
     {
+        firepowerActive = true;
         yield return new WaitForSeconds(duration);
+        firepowerActive = false;
+    }
+    void FirepowerUp()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) && energy > 2)
+        {
+            StartCoroutine(FirepowerRoutine(firepowerDuration));
+        }
     }
 
-    //overdrive - spend all but one energy to activate both previous effects for double the duration
+    //overdrive - spend all but one energy to activate both powerups effects for double the duration
     void OverdrivePowerup()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && energy > 3 || Input.GetKeyDown(KeyCode.RightShift) && energy > 3)
+        {
+            energy = 1;
             StartCoroutine(ShieldRoutine(shieldDuration * 2));
-        StartCoroutine(FirepowerRoutine(firepowerDuration * 2));
+            StartCoroutine(FirepowerRoutine(firepowerDuration * 2));
+        }
     }
 
 
