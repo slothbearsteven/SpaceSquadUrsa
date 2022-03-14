@@ -16,8 +16,15 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAudio;
     private int shieldDuration = 5;
     public GameObject shieldPowerup;
+    private bool shieldActive;
     private int firepowerDuration = 5;
-    private bool firepowerActive = false;
+    private bool firepowerActive;
+
+    private Vector3 offsetRight = new Vector3(1, 0, 0.15f);
+    private Vector3 offsetLeft = new Vector3(-1, 0, 0.15f);
+
+    private Vector3 firepowerOffsetRight = new Vector3(0.3f, 0, 0.15f);
+    private Vector3 firepowerOffsetLeft = new Vector3(-0.3f, 0, 0.15f);
     private float xbounds = 20.0f;
     private float zbounds = 11.0f;
 
@@ -26,11 +33,13 @@ public class PlayerController : MonoBehaviour
     public Text energyText;
     public GameObject projectilePrefab;
 
-    private Vector3 offset = new Vector3(0, 0, 0.15f);
+
     // Start is called before the first frame update
     void Start()
     {
         energy = 5;
+        shieldActive = false;
+        firepowerActive = false;
         playerAudio = GetComponent<AudioSource>();
     }
 
@@ -41,7 +50,9 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
         PlayerShoot();
         energyText.text = $"Energy: {energy}";
-
+        FirepowerUp();
+        ShieldUp();
+        OverdrivePowerup();
     }
 
 
@@ -94,7 +105,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && MainManager.gameActive)
         {
             playerAudio.PlayOneShot(shootingSound, 0.5f);
-            Instantiate(projectilePrefab, transform.position + offset, projectilePrefab.transform.rotation);
+            Instantiate(projectilePrefab, transform.position + offsetRight, projectilePrefab.transform.rotation);
+            Instantiate(projectilePrefab, transform.position + offsetLeft, projectilePrefab.transform.rotation);
+            if (firepowerActive)
+            {
+                playerAudio.PlayOneShot(shootingSound, 0.5f);
+                Instantiate(projectilePrefab, transform.position + firepowerOffsetRight, projectilePrefab.transform.rotation);
+                Instantiate(projectilePrefab, transform.position + firepowerOffsetLeft, projectilePrefab.transform.rotation);
+            }
         }
     }
 
@@ -103,26 +121,37 @@ public class PlayerController : MonoBehaviour
     // shield - spend one energy to become shielded for several seconds
     IEnumerator ShieldRoutine(int duration)
     {
+        Debug.Log("Shield Start");
         shieldPowerup.SetActive(true);
+        shieldActive = true;
         yield return new WaitForSeconds(duration);
         shieldPowerup.SetActive(false);
+        shieldActive = false;
+        Debug.Log("Shield End");
     }
     void ShieldUp()
     {
-        if (Input.GetKeyDown(KeyCode.X) && energy > 1)
+        if (Input.GetKeyDown(KeyCode.X) && energy > 1 && !shieldActive)
+        {
+
+            energy--;
             StartCoroutine(ShieldRoutine(shieldDuration));
+        }
     }
     //fire power - increases the amount of projectiles fired for a limited time for the cost of 2 energy
     IEnumerator FirepowerRoutine(int duration)
     {
+        Debug.Log("Firepower Start");
         firepowerActive = true;
         yield return new WaitForSeconds(duration);
         firepowerActive = false;
+        Debug.Log("Firepower end");
     }
     void FirepowerUp()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && energy > 2)
+        if (Input.GetKeyDown(KeyCode.Z) && energy > 2 && !firepowerActive)
         {
+            energy -= 2;
             StartCoroutine(FirepowerRoutine(firepowerDuration));
         }
     }
@@ -143,13 +172,17 @@ public class PlayerController : MonoBehaviour
 
     void PlayerEnergyDecrease()
     {// Removes an energy from the player, then if the player has zero or less energy, ensures the energy amount is set to zero for the ui, and then begins the destruction coroutine
-        energy -= 1;
-        if (energy <= 0)
+        if (!shieldActive)
         {
 
-            energy = 0;
-            StartCoroutine(DestructionCoroutine());
+            energy -= 1;
+            if (energy <= 0)
+            {
 
+                energy = 0;
+                StartCoroutine(DestructionCoroutine());
+
+            }
         }
     }
 

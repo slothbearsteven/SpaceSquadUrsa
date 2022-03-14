@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Enemy Projectile
   - Player Projectile
+  - FxTemporaire
+  - Shield
   layers:
   - Default
   - TransparentFX
