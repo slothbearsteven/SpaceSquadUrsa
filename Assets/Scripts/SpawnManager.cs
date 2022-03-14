@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
 {
 
     public GameObject enemy;
-
+    // eventually will need to create an array or list to contain differemt prefabs of varying Enemy types
     private float zSpawnMax = 9.0f;
     private float zPawnMin = 5.0f;
     private float xSpawnRange = 20.0f;

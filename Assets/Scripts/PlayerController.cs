@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip deathSound;
     public GameObject playerSprite;
     private AudioSource playerAudio;
+    private int shieldDuration = 5;
+    private int firepowerDuration = 5;
     private float xbounds = 20.0f;
     private float zbounds = 11.0f;
 
@@ -93,6 +95,30 @@ public class PlayerController : MonoBehaviour
             Instantiate(projectilePrefab, transform.position + offset, projectilePrefab.transform.rotation);
         }
     }
+
+    //Create life gamble mechanics - note that each should NOT allow the user to trigger their death
+
+    // shield - spend one energy to become shielded for several seconds
+    IEnumerator ShieldRoutine(int duration)
+    {
+        yield return new WaitForSeconds(duration);
+    }
+    //fire power - increases the amount of projectiles fired for a limited time for the cost of 2 energy
+    IEnumerator FirepowerRoutine(int duration)
+    {
+        yield return new WaitForSeconds(duration);
+    }
+
+    //overdrive - spend all but one energy to activate both previous effects for double the duration
+    void OverdrivePowerup()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            StartCoroutine(ShieldRoutine(shieldDuration * 2));
+        StartCoroutine(FirepowerRoutine(firepowerDuration * 2));
+    }
+
+
+
 
     void PlayerEnergyDecrease()
     {// Removes an energy from the player, then if the player has zero or less energy, ensures the energy amount is set to zero for the ui, and then begins the destruction coroutine
