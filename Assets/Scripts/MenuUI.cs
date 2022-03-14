@@ -21,7 +21,7 @@ public class MenuUI : MonoBehaviour
 
     }
     public void StartNew()
-    {
+    {//loads the scene MAIN and begins the game
         SceneManager.LoadScene(1);
     }
 

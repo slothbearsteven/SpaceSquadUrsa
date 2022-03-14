@@ -7,10 +7,9 @@ using System.IO;
 
 public class MainManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     public static int highScore;
     public static int score;
-
 
     public static bool gameActive;
     public static MainManager Instance { get; private set; }
@@ -26,7 +25,7 @@ public class MainManager : MonoBehaviour
 
 
     void SetHighScore()
-    {
+    {//if the current score is ever equal to or higher than the current score, the high score will be replaced in that instance and saved.
         if (score >= highScore)
         {
             highScore = score;
@@ -39,6 +38,8 @@ public class MainManager : MonoBehaviour
 
     private void Awake()
     {
+        //Whenever the scene plays (as it is not destroyed on load, therefore it awakes instead of starting for each time the game is restarted.)
+        //The variables for the game are set to their default values, and the highscore is loaded from the saved files.
         score = 0;
         gameActive = true;
         if (Instance != null)
@@ -59,7 +60,7 @@ public class MainManager : MonoBehaviour
     }
 
     public void SaveHighScore()
-    {
+    {//uses the currently set  high score to save a json file of said score, allowing it to persist after the game is exited.
         SaveData data = new SaveData();
 
         data.highScore = highScore;
@@ -71,7 +72,7 @@ public class MainManager : MonoBehaviour
     }
 
     public void LoadHighScore()
-    {
+    {//checks for the json file then loads the highscore if said file is detected
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {

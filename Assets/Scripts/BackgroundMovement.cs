@@ -16,16 +16,22 @@ public class BackgroundMovement : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector3.back * Time.deltaTime * speed);
-        // If background moves left by its repeat width, move it back to start position
-        if (transform.position.z < startPos.z - repeatWidth)
+        MoveBackground();
+    }
+
+    void MoveBackground()
+    { //Moves the background as game is active. Once the player dies, the background should stop.
+        if (MainManager.gameActive)
         {
-            transform.position = startPos;
+            transform.Translate(Vector3.back * Time.deltaTime * speed);
+            // If background moves left by its repeat width, move it back to start position
+            if (transform.position.z < startPos.z - repeatWidth)
+            {
+                transform.position = startPos;
+            }
         }
     }
 
-
 }
-
 
 

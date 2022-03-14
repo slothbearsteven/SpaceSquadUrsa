@@ -33,6 +33,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(int enemiesToSpawn)
     {
+        // Creates an enemy according to the input of the method, which should always be the wave number. The enemies area spawned at the top of the game area to avoid spontaneous collision with where the player usually will be.
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             float randomX = Random.Range(-xSpawnRange, xSpawnRange);
@@ -45,7 +46,8 @@ public class SpawnManager : MonoBehaviour
     }
 
     public void WaveSet()
-    {
+    {// whenever the amount of enemies in a wave reaches 0, the wave number is increased, allowing more enemies to spawn.
+     // Also adds score equal to 100 * the wave number and an energy to the player if their energy is lower than five, and ensures their energy cannot be above 5.
         enemyCount = FindObjectsOfType<Enemy>().Length;
         if (enemyCount == 0)
         {

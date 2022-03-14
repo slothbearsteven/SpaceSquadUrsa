@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip deathSound;
     public GameObject playerSprite;
     private AudioSource playerAudio;
-    private float xbounds = 22.0f;
+    private float xbounds = 20.0f;
     private float zbounds = 11.0f;
 
     //encapsulation
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
 
     private void OnTriggerEnter(Collider other)
-    {
+    {//If the player collides with an Enemy or the enemy's projectile, causes the other projectile to be destroyed and runs the player energy decrease method
         if (other.gameObject.CompareTag("Enemy Projectile"))
         {
             PlayerEnergyDecrease();
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     { //abstraction
+      //while the game is Active, uses the input from the Horizontal and verticcal Axis to allow the user to move in any direction on the 2d plane while remaining in bounds
         if (MainManager.gameActive)
         {
 
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void PlayerShoot()
-    {
+    {// When the user presses the space bar, a projectile is spawned in front of the player character
         if (Input.GetKeyDown(KeyCode.Space) && MainManager.gameActive)
         {
             playerAudio.PlayOneShot(shootingSound, 0.5f);
@@ -94,13 +95,12 @@ public class PlayerController : MonoBehaviour
     }
 
     void PlayerEnergyDecrease()
-    {
+    {// Removes an energy from the player, then if the player has zero or less energy, ensures the energy amount is set to zero for the ui, and then begins the destruction coroutine
         energy -= 1;
         if (energy <= 0)
         {
 
             energy = 0;
-            energyText.text = "Energy: Critical Failure";
             StartCoroutine(DestructionCoroutine());
 
         }
@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DestructionCoroutine()
     {
+        //plays the explosion particles and sound while setting the player sprite to inactive, allowing the animation to play before the player object is destroyed in the scene
         explosionParticle.Play();
         playerAudio.PlayOneShot(deathSound, 1.0f);
         playerSprite.SetActive(false);

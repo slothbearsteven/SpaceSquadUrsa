@@ -28,6 +28,7 @@ public class MainUI : MonoBehaviour
     }
     public void GameOver()
     {
+        //Once the players energy reaches zero, sets the game active variable to false, allowing many gameplay functions that rely on the player to end. Also dissplays the Game over and High score text and allows the user to restart the game or return to the main menu
         if (PlayerController.energy <= 0)
         {
             MainManager.gameActive = false;

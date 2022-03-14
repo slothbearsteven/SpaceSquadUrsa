@@ -10,6 +10,7 @@ public class PlayerProjectile : Projectile
     // Start is called before the first frame update
     void Start()
     {
+        //moves the player projectile faster than enemy projectiles for balances sake
         speed = 40.0f;
 
     }
