@@ -131,10 +131,10 @@ public class PlayerController : MonoBehaviour
     }
     void ShieldUp()
     {
-        if (Input.GetKeyDown(KeyCode.X) && energy > 1 && !shieldActive)
+        if (Input.GetKeyDown(KeyCode.X) && energy > 2 && !shieldActive)
         {
 
-            energy--;
+            energy -= 2;
             StartCoroutine(ShieldRoutine(shieldDuration));
         }
     }
@@ -149,9 +149,9 @@ public class PlayerController : MonoBehaviour
     }
     void FirepowerUp()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && energy > 2 && !firepowerActive)
+        if (Input.GetKeyDown(KeyCode.Z) && energy > 1 && !firepowerActive)
         {
-            energy -= 2;
+            energy--;
             StartCoroutine(FirepowerRoutine(firepowerDuration));
         }
     }
