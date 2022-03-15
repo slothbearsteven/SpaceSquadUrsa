@@ -9,13 +9,13 @@ using System.IO;
 public class SpawnManager : MonoBehaviour
 {
 
-    public GameObject enemy;
+    public List<GameObject> enemies;
     // eventually will need to create an array or list to contain differemt prefabs of varying Enemy types
     private float zSpawnMax = 9.0f;
     private float zPawnMin = 5.0f;
     private float xSpawnRange = 20.0f;
     public int enemyCount { get; private set; }
-
+    private int enemySpawned;
     public static int wave { get; private set; } = 1;
     // Start is called before the first frame update
     void Start()
@@ -33,13 +33,15 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(int enemiesToSpawn)
     {
+
         // Creates an enemy according to the input of the method, which should always be the wave number. The enemies area spawned at the top of the game area to avoid spontaneous collision with where the player usually will be.
         for (int i = 0; i < enemiesToSpawn; i++)
         {
+            enemySpawned = Random.Range(0, enemies.Count);
             float randomX = Random.Range(-xSpawnRange, xSpawnRange);
             float randomZ = Random.Range(zPawnMin, zSpawnMax);
             Vector3 spawnLocation = new Vector3(randomX, 1, randomZ);
-            Instantiate(enemy, spawnLocation, enemy.transform.rotation);
+            Instantiate(enemies[enemySpawned], spawnLocation, enemies[enemySpawned].transform.rotation);
         }
 
 

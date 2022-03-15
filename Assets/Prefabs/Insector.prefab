@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2396214129156179622}
   - component: {fileID: 7040865547400684033}
   m_Layer: 0
-  m_Name: EnemyShip
+  m_Name: Insector
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
