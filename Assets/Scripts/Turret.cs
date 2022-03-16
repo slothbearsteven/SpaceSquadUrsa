@@ -7,8 +7,8 @@ public class Turret : Enemy
     public AudioClip shootingSound;
     public AudioClip deathSound;
     public GameObject enemySprite;
-    private Quaternion extraBulletsRightOffset = new Quaternion(0, 45, 0, 30);
-    private Quaternion extraBulletsLeftOffset = new Quaternion(0, -45, 0, 30);
+    private Quaternion extraBulletsRightOffset = new Quaternion(0, 50, 0, 25);
+    private Quaternion extraBulletsLeftOffset = new Quaternion(0, -50, 0, 25);
     // Start is called before the first frame update
     void Start()
     {
