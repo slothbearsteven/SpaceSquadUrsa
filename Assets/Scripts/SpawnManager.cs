@@ -48,7 +48,7 @@ public class SpawnManager : MonoBehaviour
             int maxSpawnAttempts = wave * 20;
 
             while (!validPosition && spawnAttempts < maxSpawnAttempts)
-            {
+            {   //Spawn attempts increase until a valid position is found from a random location
                 spawnAttempts++;
                 spawnLocation = new Vector3(randomX, 1, randomZ);
                 validPosition = true;
@@ -63,6 +63,7 @@ public class SpawnManager : MonoBehaviour
                     }
                 }
             }
+            //once the valid postion is found the enemy is spawned. If no position would be valid, the enemy is not spawned to prevent any overlapping
             if (validPosition)
             {
                 Instantiate(enemy, spawnLocation, enemy.transform.rotation);
